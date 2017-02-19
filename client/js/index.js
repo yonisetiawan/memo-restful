@@ -114,27 +114,44 @@ function checkAction(input) {
             }
         }
     }
+    deleteTodos(arrId)
 
-    if (input == "remove") {
-        deleteTodos(arrId)
+}
+
+function runningUpdate() {
+    var id = $('#idUpdate').val()
+    var title = $('#titleUpdate').val()
+    var description = $('#descriptionUpdate').val()
+    var status = $('#datepickerUpdate').val()
+    if (title == "" || description == "" || status == "") {
+        alert("Warning !", "Jangan Kosongkan Form Upadate")
     } else {
-        updateStatus(arrId, input)
+        $.ajax({
+            url: "http://localhost:3000/update",
+            type: "PUT",
+            data: {
+                id: id,
+                title: title,
+                description: description,
+                status: status
+            },
+            success: function(result) {
+              tampung = `     <tr id="trID${result._id}">
+                                    <td id="idTitle${result._id}">${result.title}</td>
+                                    <input id="idDescription${result._id}" type="hidden" value="${result.description}"></input>
+                                    <input id="idDatepicker${result._id}" type="hidden" value="${result.status}"></input>
+                                    <td class="collapsing">
+                                        <div class="ui fitted checkbox">
+                                            <input id="${result._id}" type="checkbox"><label name="actioncheck"></label>
+                                        </div>
+                                    </td>
+                                </tr>`
+                document.getElementById(`trID${result._id}`).innerHTML = tampung
+            }
+        });
     }
 }
 
-function updateStatus(arrId, input) {
-    $.ajax({
-        url: "http://localhost:3000/update",
-        type: "PUT",
-        data: {
-            arrId: JSON.stringify(arrId),
-            statusTodos: input
-        },
-        success: function(result) {
-            return result
-        }
-    });
-}
 
 function deleteTodos(arrId) {
     $.ajax({

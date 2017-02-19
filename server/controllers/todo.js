@@ -19,40 +19,40 @@ var Todos = {
     },
 
     getAll: function(req, res, next) {
-        modelsTodos.find({},function(err, result) {
-                res.send(result)
-            });
+        modelsTodos.find({}, function(err, result) {
+            res.send(result)
+        });
     },
 
     update: function(req, res, next) {
-        var dataUpdate = JSON.parse(req.body.arrId)
-        dataUpdate.forEach(function(data) {
-            modelsTodos.findById(data, function(err, result) {
-                if (err) res.send(err)
-                else {
-                    result.status = req.body.statusTodos
-                    result.save()
-                }
-            })
+        modelsTodos.findById(req.body.id, function(err, result) {
+            if (err) res.send(err)
+            else {
+                result.title = req.body.title
+                result.description = req.body.description
+                result.status = req.body.status
+                result.save()
+                res.send(result)
+            }
         })
-        res.send(true)
+
     },
     delete: function(req, res, next) {
         var dataRemove = JSON.parse(req.body.arrId)
         dataRemove.forEach(function(data) {
             modelsTodos.find({
                 _id: data
-            },function(err, result) {
+            }, function(err, result) {
                 if (err) res.send(err)
-                else{
-                  result[0].remove(function(err) {
-                      if (err) res.send(err)
-                  })
+                else {
+                    result[0].remove(function(err) {
+                        if (err) res.send(err)
+                    })
                 }
             })
         })
         res.send({
-          status: true
+            status: true
         })
     }
 }
