@@ -109,8 +109,10 @@ function checkAction(input) {
             }else {
               document.querySelector("h1#titleRead").innerHTML = $(`#idTitle${id}`).text()
               document.querySelector("p#descriptionRead").innerHTML = $(`#idDescription${id}`).val()
-              document.querySelector("p#datepickerRead").innerHTML = $(`#idDatepicker${id}`).val()
+              document.querySelector("p#datepickerRead").innerHTML = date.localDate(new Date($(`#idDatepicker${id}`).val()))
               break;
+
+
             }
         }
     }
